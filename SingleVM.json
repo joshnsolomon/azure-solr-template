@@ -1,0 +1,223 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_SingleVM_adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "virtualMachines_SingleVM_name": {
+            "defaultValue": "SingleVM",
+            "type": "String"
+        },
+        "networkInterfaces_singlevm920_name": {
+            "defaultValue": "singlevm920",
+            "type": "String"
+        },
+        "networkSecurityGroups_SingleVM_name": {
+            "defaultValue": "SingleVM",
+            "type": "String"
+        },
+        "publicIPAddresses_SingleVM_name": {
+            "defaultValue": "SingleVM",
+            "type": "String"
+        },
+        "virtualNetworks_ApttusDevOps2_name": {
+            "defaultValue": "ApttusDevOps2",
+            "type": "String"
+        },
+        "storageAccounts_apttusdevops24668_name": {
+            "defaultValue": "apttusdevops24668",
+            "type": "String"
+        },
+        "storageAccounts_apttusdevops28409_name": {
+            "defaultValue": "apttusdevops28409",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/ApttusDevOps2/providers/Microsoft.Compute/virtualMachines/SingleVM'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('virtualMachines_SingleVM_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "westus",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_DS3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "15.10",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[parameters('virtualMachines_SingleVM_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', parameters('storageAccounts_apttusdevops24668_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_SingleVM_name'),'2016731306.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachines_SingleVM_name')]",
+                    "adminUsername": "apttus",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": false
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_SingleVM_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_singlevm920_name'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_apttusdevops24668_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_singlevm920_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/ApttusDevOps2/providers/Microsoft.Network/networkInterfaces/singlevm920'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_singlevm920_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westus",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.0.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_SingleVM_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_ApttusDevOps2_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_SingleVM_name'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_SingleVM_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_ApttusDevOps2_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_SingleVM_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/ApttusDevOps2/providers/Microsoft.Network/networkSecurityGroups/SingleVM'.",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[parameters('networkSecurityGroups_SingleVM_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westus",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/ApttusDevOps2/providers/Microsoft.Network/publicIPAddresses/SingleVM'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('publicIPAddresses_SingleVM_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westus",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/ApttusDevOps2/providers/Microsoft.Network/virtualNetworks/ApttusDevOps2'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_ApttusDevOps2_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "westus",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/apttusdevops2/providers/Microsoft.Storage/storageAccounts/apttusdevops24668'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_apttusdevops24668_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "westus",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/b0bb74ce-d805-48c0-b51f-ec1371350c17/resourceGroups/apttusdevops2/providers/Microsoft.Storage/storageAccounts/apttusdevops28409'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_apttusdevops28409_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "westus",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        }
+    ]
+}

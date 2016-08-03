@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_SingleVM_adminPassword": {
+            "value": null
+        },
+        "virtualMachines_SingleVM_name": {
+            "value": null
+        },
+        "networkInterfaces_singlevm920_name": {
+            "value": null
+        },
+        "networkSecurityGroups_SingleVM_name": {
+            "value": null
+        },
+        "publicIPAddresses_SingleVM_name": {
+            "value": null
+        },
+        "virtualNetworks_ApttusDevOps2_name": {
+            "value": null
+        },
+        "storageAccounts_apttusdevops24668_name": {
+            "value": null
+        },
+        "storageAccounts_apttusdevops28409_name": {
+            "value": null
+        }
+    }
+}
