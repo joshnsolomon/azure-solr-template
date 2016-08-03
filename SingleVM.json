@@ -218,6 +218,26 @@
             "properties": {},
             "resources": [],
             "dependsOn": []
-        }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(parameters('virtualMachines_SingleVM_name'),'/installsolr')]",
+			"apiVersion": "2015-05-01-preview",
+			"location": "[parameters('location')]",
+			"dependsOn": [
+				"[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachines_SingleVM_name'))]"
+			],
+			"properties": {
+				"publisher": "Microsoft.OSTCExtensions",
+				"type": "CustomScriptForLinux",
+				"typeHandlerVersion": "1.2",
+				"settings": {
+					"fileUris": [
+						"https://raw.githubusercontent.com/joshnsolomon/azure-solr-template/master/SingleVM.sh?token=ALLueF5LgGWI1aM7AjtHzK6ZD3MSyYdCks5Xq7MBwA%3D%3D"
+					],
+					"commandToExecute": "sh SingleVM.sh"
+				}
+			}
+		}
     ]
 }
