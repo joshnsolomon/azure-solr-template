@@ -233,7 +233,7 @@
 				"typeHandlerVersion": "1.2",
 				"settings": {
 					"fileUris": [
-						"https://raw.githubusercontent.com/joshnsolomon/azure-solr-template/master/SingleVM.sh?token=ALLueF5LgGWI1aM7AjtHzK6ZD3MSyYdCks5Xq7MBwA%3D%3D"
+						"https://raw.githubusercontent.com/joshnsolomon/azure-solr-template/master/SingleVM.sh"
 					],
 					"commandToExecute": "sh SingleVM.sh"
 				}
